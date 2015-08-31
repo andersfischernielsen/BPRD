@@ -145,6 +145,7 @@ let rec eval2 e (env : (string * int) list) : int =
     | CstI i                -> i
     | Var x                 -> lookup env x 
     | Let(list, body)       -> let evaluated = List.foldBack (fun (x, right) env -> (x, eval2 right env)::env) list env
+                                               //Should this be List.fold? 
                                evaluated |> eval2 body 
     | Prim("+", e1, e2)     -> eval2 e1 env + eval2 e2 env
     | Prim("*", e1, e2)     -> eval2 e1 env * eval2 e2 env
