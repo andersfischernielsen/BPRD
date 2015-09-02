@@ -120,11 +120,6 @@ let simplify aexpr : aexpr =
     | _                     -> aexpr
 
 
-//(v)
-//TODO: Finish exercise.
-//What is Symbolic Differentiation?
-
-
 //-----
 // 1.4
 //-----
@@ -200,6 +195,8 @@ let rec tcomp2 (e : expr2) (cenv : string list) : texpr =
     | Var x                 -> TVar (getindex cenv x)
     | Let(list, ebody)      -> List.foldBack (fun (x, erhs) cenv -> TLet(tcomp2 erhs cenv, tcomp2 ebody (x :: cenv))) list cenv //I tried. 
     | Prim(ope, e1, e2)     -> TPrim(ope, tcomp2 e1 cenv, tcomp2 e2 cenv)
+
+
 
 [<EntryPoint>]
 let main argv = 
