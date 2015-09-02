@@ -5,7 +5,9 @@ namespace Assignment1._4
 {
         abstract class Expr
         {
-            abstract public int Eval(Dictionary<string, int> env);
+            public abstract int Eval(Dictionary<string, int> env);
+            public abstract override string ToString();
+            public abstract Expr Simplify(Expr toSimplify);
         }
 
         class CstI : Expr
@@ -18,6 +20,16 @@ namespace Assignment1._4
             {
                 return I;
             }
+
+            public override string ToString()
+            {
+                return I.ToString();
+            }
+
+            public override Expr Simplify(Expr toSimplify)
+            {
+                return this;
+            }
         }
 
         class Var : Expr
@@ -29,15 +41,25 @@ namespace Assignment1._4
             public override int Eval(Dictionary<string,int> env) {
                 return env[Name];
             }
+
+            public override string ToString()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override Expr Simplify(Expr toSimplify)
+            {
+                return this;
+            }
         }
 
 
-        class Prim : Expr
+        abstract class Binop : Expr
         {
             protected readonly string Oper;
             protected readonly Expr E1, E2;
 
-            public Prim(string oper, Expr e1, Expr e2) { Oper = oper; E1 = e1; E2 = e2; }
+            protected Binop(string oper, Expr e1, Expr e2) { Oper = oper; E1 = e1; E2 = e2; }
 
             public override int Eval(Dictionary<string,int> env)
             {
