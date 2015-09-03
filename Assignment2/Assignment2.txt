@@ -1,0 +1,73 @@
+***********
+Assignment2
+AFIN
+***********
+
+------------
+Exercise 3.2
+------------ 
+a?(b+a?)*
+
+
+------------
+Exercise 3.3
+------------
+Write out the rightmost derivation of the string below from the expression grammar at the end of Sect. 3.6.6, corresponding to ExprPar.fsy. Take note of the sequence of grammar rules (A–I) used.
+let z = (17) in z + 2 * 3 end EOF
+
+Main 			
+Expr EOF										//Rule A
+let NAME = Expr in Expr end EOF					//Rule F
+let NAME = Expr in Expr + Expr end EOF 			//Rule H 	(do this before expanding the * Expr due to precedens)
+let NAME = Expr in Expr + Expr * Expr end EOF	//Rule G
+let NAME = Expr in Expr + Expr * 3 end EOF		//Rule C
+let NAME = Expr in Expr + 2 * 3 end EOF			//Rule C
+let NAME = Expr in z + 2 * 3 end EOF			//Rule B
+let NAME = (Expr) in z + 2 * 3 end EOF			//Rule E
+let NAME = (17) in z + 2 * 3 end EOF			//Rule C
+let z = (17) in z + 2 * 3 end EOF				//Rule B
+
+------------
+Exercise 3.4
+------------
+Draw the above derivation as a tree.
+
+
+------------
+Exercise 3.5
+------------
+Getexpr.zip from the book homepage and unpack it. Using a command prompt, generate 
+(1) the lexer and 
+(2) the parser for expressions by running fslex and fsyacc; then 
+(3) load the expression abstract syntax, the lexer and parser modules, and the expression interpreter and compilers, into an interactive F# session (fsi):
+fslex --unicode ExprLex.fsl
+fsyacc --module ExprPar ExprPar.fsy
+fsi -r FSharp.PowerPack.dll Absyn.fs ExprPar.fs ExprLex.fs ^
+Parse.fs
+Now try the parser on several example expressions, both well-formed and ill-formed ones, such as these, and some of your own invention:
+open Parse;;
+fromString "1 + 2 * 3";;
+fromString "1 - 2 - 3";;
+fromString "1 + -2";;
+fromString "x++";;
+fromString "1 + 1.2";;
+fromString "1 + ";;
+fromString "let z = (17) in z + 2 * 3 end";;
+fromString "let z = 17) in z + 2 * 3 end";;
+fromString "let in = (17) in z + 2 * 3 end";;
+fromString "1 + let x=5 in let y=7+x in y+y end + x end";;
+
+------------
+Exercise 3.6
+------------
+Use the expression parser from Parse.fs and the compiler scomp (from expressions to stack machine instructions) and the associated datatypes from Expr.fs, to define a function compString : string -> sinstr list that parses a string as an expression and compiles it to stack machine code.
+
+------------
+Exercise 3.7
+------------
+Extend the expression language abstract syntax and the lexer and parser specifications with conditional expressions. The abstract syntax should be If(e1, e2, e3), so modify file Absyn.fs as well as ExprLex.fsl and file ExprPar.fsy. The concrete syntax may be the keyword-laden F#/ML-style:
+if e1 then e2 else e3
+or the more light-weight C/C++/Java/C#-style:
+e1 ? e2 : e3
+Some documentation for fslex and fsyacc is found in this chapter and in Expert
+F# [17].
