@@ -7,14 +7,11 @@ AFIN
 Exercise 3.2
 ------------ 
 a?(b+a?)*
-
+TODO: Add state machine.
 
 ------------
 Exercise 3.3
 ------------
-Write out the rightmost derivation of the string below from the expression grammar at the end of Sect. 3.6.6, corresponding to ExprPar.fsy. Take note of the sequence of grammar rules (A–I) used.
-let z = (17) in z + 2 * 3 end EOF
-
 Main 			
 Expr EOF										//Rule A
 let NAME = Expr in Expr end EOF					//Rule F
@@ -30,7 +27,7 @@ let z = (17) in z + 2 * 3 end EOF				//Rule B
 ------------
 Exercise 3.4
 ------------
-Draw the above derivation as a tree.
+See attached PNG.
 
 
 ------------
