@@ -3,11 +3,13 @@ Assignment2
 AFIN
 ***********
 
+
 ------------
 Exercise 3.2
 ------------ 
 a?(b+a?)*
 See attached PNG for DFA drawing.
+
 
 ------------
 Exercise 3.3
@@ -23,6 +25,7 @@ let NAME = Expr in z + 2 * 3 end EOF			//Rule B
 let NAME = (Expr) in z + 2 * 3 end EOF			//Rule E
 let NAME = (17) in z + 2 * 3 end EOF			//Rule C
 let z = (17) in z + 2 * 3 end EOF				//Rule B
+
 
 ------------
 Exercise 3.4
@@ -54,10 +57,12 @@ fromString "let z = 17) in z + 2 * 3 end";;
 fromString "let in = (17) in z + 2 * 3 end";;
 fromString "1 + let x=5 in let y=7+x in y+y end + x end";;
 
+
 ------------
 Exercise 3.6
 ------------
 Use the expression parser from Parse.fs and the compiler scomp (from expressions to stack machine instructions) and the associated datatypes from Expr.fs, to define a function compString : string -> sinstr list that parses a string as an expression and compiles it to stack machine code.
+
 
 ------------
 Exercise 3.7
