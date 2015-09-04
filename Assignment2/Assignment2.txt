@@ -7,7 +7,7 @@ AFIN
 Exercise 3.2
 ------------ 
 a?(b+a?)*
-TODO: Add state machine.
+See attached PNG for DFA drawing.
 
 ------------
 Exercise 3.3
