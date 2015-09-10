@@ -16,11 +16,13 @@ let lexemeAsString lexbuf =
 
 let keyword s =
     match s with
-    | "let" -> LET
-	| "if"	-> IF
-    | "in"  -> IN
-    | "end" -> END
-    | _     -> NAME s
+    | "let"     -> LET
+    | "if"      -> IF
+    | "then"    -> THEN
+    | "else"    -> ELSE
+    | "in"      -> IN
+    | "end"     -> END
+    | _         -> NAME s
 }
 
 rule Token = parse
