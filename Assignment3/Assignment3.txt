@@ -1,0 +1,34 @@
+//
+//Assignment 4.1
+//
+I played around for a bit. Solved? :)
+
+
+//
+//Assignment 4.2
+//
+//(i)
+let sum n = if n = 0 then 0 else n + sum (n-1) in sum 1000 end
+
+//(ii)
+let pow n = if n = 1 then 3 else 3 * pow (n-1) in pow 8 end
+
+//(iii)
+let pow2 n = 
+	let pow m = if m = 1 then 3 else 3 * pow (m-1) in pow m end 
+in pow (n) + pow (n-1) end
+	
+
+//
+//Assignment 4.3
+//
+
+
+//
+//Assignment 4.4
+//
+
+
+//
+//Assignment 4.5
+//
