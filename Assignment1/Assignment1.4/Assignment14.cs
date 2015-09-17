@@ -8,6 +8,7 @@ namespace Assignment14
     {
         public abstract int Eval(Dictionary<string, int> env);
         public abstract Expr Simplify();
+        public bool Equals(Expr other);
     }
 
     public class CstI : Expr
@@ -29,6 +30,11 @@ namespace Assignment14
         public override Expr Simplify()
         {
             return this;
+        }
+
+        public override Expr Equals(Expr other)
+        {
+            return I = other.I;
         }
     }
 
@@ -52,6 +58,11 @@ namespace Assignment14
         {
             return this;
         }
+
+        public override Expr Equals(Expr other)
+        {
+            return Name = other.Name;
+        }
     }
 
     public abstract class Binop : Expr
@@ -60,6 +71,11 @@ namespace Assignment14
 
         public readonly Expr Expr1 { get; private set; }
         public readonly Expr Expr2 { get; private set; }
+
+        public override Expr Equals(Expr other)
+        {
+            return Expr1.Equals(other.Expr1) && Expr2.Equals(other.Expr1);
+        }
     }
 
     public class Add : Binop
@@ -78,15 +94,15 @@ namespace Assignment14
 
         public override Expr Simplify()
         {
-            if (Expr1 == new CstI(0) && Expr2 == new CstI(0))
+            if (Expr1.Equals(new CstI(0)) && Expr2.Equals(new CstI(0)))
             {
                 return new CstI(0);
             }
-            if (Expr1 == new CstI(0))
+            if (Expr1.Equals(new CstI(0)))
             {
                 return Expr2;
             }
-            if (Expr2 == new CstI(0))
+            if (Expr2.Equals(new CstI(0)))
             {
                 return Expr1;
             }
@@ -111,15 +127,15 @@ namespace Assignment14
 
         public override Expr Simplify()
         {
-            if (Expr1 == new CstI(0) || Expr2 == new CstI(0))
+            if (Expr1.Equals(new CstI(0)) || Expr2.Equals(new CstI(0)))
             {
                 return new CstI(0);
             }
-            if (Expr1 == new CstI(1))
+            if (Expr1.Equals(new CstI(1)))
             {
                 return Expr2;
             }
-            if (Expr2 == new CstI(1))
+            if (Expr2.Equals(new CstI(1)))
             {
                 return Expr1;
             }
@@ -144,15 +160,15 @@ namespace Assignment14
 
         public override Expr Simplify()
         {
-            if (Expr1 == new CstI(0) && Expr2 == new CstI(0))
+            if (Expr1.Equals(new CstI(0)) && Expr2.Equals(new CstI(0)))
             {
                 return new CstI(0);
             }
-            if (Expr1 == Expr2)
+            if (Expr1.Equals(Expr2))
             {
                 return new CstI(0);
             }
-            if (Expr2 == new CstI(0))
+            if (Expr2.Equals(new CstI(0)))
             {
                 return Expr1;
             }
