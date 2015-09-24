@@ -23,17 +23,6 @@ let upTo108 n = if n >= 108 then n else upTo108 n+10 in opTo108 18 end
 
 
 //
-//Assignment 4.3
+//Assignment 4.3, 4.4, 4.5 
 //
-See attached VS Solution for solution.
-
-//
-//Assignment 4.4
-//
-//Couldn't figure out a solution. Halp pls? :)
-
-
-//
-//Assignment 4.5
-//
-See attached VS solution.
+See attached Visual Studio solution for assignment solution.
