@@ -1,0 +1,10 @@
+//
+// Assignment 4
+// 
+
+
+// Exercise 6.1 
+- The third result is as expected, since the value for x has already been "stored" in the previous closure. Assigning x = 77 therefore shouldn't have any effect on "addTwo 5". 
+- The last expression is a closure, which is expected. The expression is "missing" a parameter, and will therefore be a closure, waiting for a parameter. This is du to partial application.
+
+//Exercise 6.2
