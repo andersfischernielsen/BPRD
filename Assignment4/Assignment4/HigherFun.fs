@@ -59,9 +59,9 @@ let rec eval (e : expr) (env : value env) : value =
     | Letfun(f, x, fBody, letBody) -> 
       let bodyEnv = (f, Closure(f, x, fBody, env)) :: env
       eval letBody bodyEnv
-    | Fun(f, fBody) -> 
-        let body = eval fBody env
-        let lol = ""
+    | Fun(x, funBody) -> 
+      let bodyEnv = (x, Clos(x, funBody, env)) :: env        //TODO: ASK TA'S ABOUT THIS.
+      eval funBody bodyEnv
     | Call(eFun, eArg) -> 
       let fClosure = eval eFun env
       match fClosure with
