@@ -57,6 +57,7 @@ AtExpr:
   | NAME                                { Var $1                 }
   | LET NAME EQ Expr IN Expr END        { Let($2, $4, $6)        }
   | LET NAME NAME EQ Expr IN Expr END   { Letfun($2, $3, $5, $7) }
+  | FUN NAME TO Expr                    { Fun($2, $4)            }
   | LPAR Expr RPAR                      { $2                     }
 ;
 
