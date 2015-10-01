@@ -27,7 +27,7 @@ let keyword s =
     | "if"    -> IF
     | "in"    -> IN
     | "let"   -> LET
-	| "fun"   -> FUN
+    | "fun"   -> FUN
     | "not"   -> NOT
     | "then"  -> THEN
     | "true"  -> CSTBOOL true
