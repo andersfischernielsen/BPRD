@@ -7,4 +7,22 @@
 - The third result is as expected, since the value for x has already been "stored" in the previous closure. Assigning x = 77 therefore shouldn't have any effect on "addTwo 5". 
 - The last expression is a closure, which is expected. The expression is "missing" a parameter, and will therefore be a closure, waiting for a parameter. This is du to partial application.
 
+
 //Exercise 6.2
+See Visual Studio solution for solution. 
+The following things have been added/changed in HigherFun.fs: 
+- Added Clos type to value type.
+- Implemented Fun match case in eval function.
+- Implemented Clos match case in Call match case in eval function.
+
+
+//Exercise 6.3
+See Visual Studio solution for solution. 
+The following things have been added/changed in FunLex: 
+- Added "fun" keyword.
+- Added "->" token. 
+The following things have been added/changed in FunPar: 
+- Added FUN match case in AtExpr.
+
+
+//Exercise 6.4
