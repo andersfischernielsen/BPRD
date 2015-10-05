@@ -26,15 +26,15 @@ The following things have been added/changed in FunPar:
 
 
 //Exercise 6.4
-Couldn't finish exercise.
+Couldn't finish exercise. IDK how.
 
 
 //Exercise 6.5
 //1) 
 i)   int.
-ii)  fail. Typechecket fejler, da definitionen af f og g er cirkulær. 
+ii)  fail. Typecheck fails, since the definition of f and g is circular.
 iii) bool.
-iv)  fail. Da g kaldes med en bool må y være en bool. Dermed er returtypen bool. Da f x kaldes med en int (i form af x), opstår der en typefejl, da x returneres hvis y == false. Returtypen kan ikke både være en bool og en int.
+iv)  fail. Since g is called with a bool, y must be a bool. Therefore the returntype of the function is bool. Since f x is called with an in (x is an int) a type error occurs, since x is returned if y is false. The return type cannot be both bool and int.
 iv)  bool.
 
 //2)
@@ -43,6 +43,6 @@ ii)  let f b = if b = 1 then b else b in f end
 iii) let f a = let g = a + b in g end in f end
 iv)  let f a = let g b = a in g in end f end
 v)   let f a = let g b = b in g in end f end
-vi)  
-vii) 
-iix) 
+vi)  IDK
+vii) IDK
+iix) IDK
