@@ -8,12 +8,12 @@ namespace Assignment14
     {
         public abstract int Eval(Dictionary<string, int> env);
         public abstract Expr Simplify();
-        public bool Equals(Expr other);
+        public abstract bool Equals(Expr other);
     }
 
     public class CstI : Expr
     {
-        public readonly int I { get; set; }
+        public int I { get; }
 
 		public CstI(int i) { I = i; }
 
@@ -32,15 +32,16 @@ namespace Assignment14
             return this;
         }
 
-        public override Expr Equals(Expr other)
+        public override bool Equals(Expr other)
         {
-            return I = other.I;
+            var that = other as CstI;
+            return I == that?.I;
         }
     }
 
     public class Var : Expr
     {
-        public readonly string Name { get; set; }
+        public string Name { get; }
 
         public Var(string name) { Name = name; }
 
@@ -59,9 +60,10 @@ namespace Assignment14
             return this;
         }
 
-        public override Expr Equals(Expr other)
+        public override bool Equals(Expr other)
         {
-            return Name = other.Name;
+            var that = other as Var;
+            return Name == that?.Name;
         }
     }
 
@@ -69,12 +71,13 @@ namespace Assignment14
     {
         protected Binop(Expr expr1, Expr expr2) { Expr1 = expr1; Expr2 = expr2; }
 
-        public readonly Expr Expr1 { get; private set; }
-        public readonly Expr Expr2 { get; private set; }
+        public Expr Expr1 { get; }
+        public Expr Expr2 { get; }
 
-        public override Expr Equals(Expr other)
+        public override bool Equals(Expr other)
         {
-            return Expr1.Equals(other.Expr1) && Expr2.Equals(other.Expr1);
+            var that = other as Binop;
+            return Expr1.Equals(that?.Expr1) && Expr2.Equals(that?.Expr1);
         }
     }
 
@@ -84,7 +87,7 @@ namespace Assignment14
 
         public override string ToString()
         {
-            return "(" + Expr1 + " + " + Expr2 + ")"; // tostring not neccesary.
+            return "(" + Expr1 + " + " + Expr2 + ")";
         }
 
         public override int Eval(Dictionary<string, int> env)
@@ -102,12 +105,8 @@ namespace Assignment14
             {
                 return Expr2;
             }
-            if (Expr2.Equals(new CstI(0)))
-            {
-                return Expr1;
-            }
 
-            return this;
+            return Expr2.Equals(new CstI(0)) ? Expr1 : this;
         }
     }
 
@@ -117,7 +116,7 @@ namespace Assignment14
 
         public override string ToString()
         {
-            return "(" + Expr1 + " * " + Expr2 + ")"; // tostring not neccesary.
+            return "(" + Expr1 + " * " + Expr2 + ")";
         }
 
         public override int Eval(Dictionary<string, int> env)
@@ -135,12 +134,8 @@ namespace Assignment14
             {
                 return Expr2;
             }
-            if (Expr2.Equals(new CstI(1)))
-            {
-                return Expr1;
-            }
 
-            return this;
+            return Expr2.Equals(new CstI(1)) ? Expr1 : this;
         }
     }
 
@@ -150,7 +145,7 @@ namespace Assignment14
 
         public override string ToString()
         {
-            return "(" + Expr1 + " - " + Expr2 + ")"; // tostring not neccesary.
+            return "(" + Expr1 + " - " + Expr2 + ")";
         }
 
         public override int Eval(Dictionary<string, int> env)
@@ -168,11 +163,36 @@ namespace Assignment14
             {
                 return new CstI(0);
             }
-            if (Expr2.Equals(new CstI(0)))
-            {
-                return Expr1;
-            }
 
+            return Expr2.Equals(new CstI(0)) ? Expr1 : this;
+        }
+    }
+
+    public abstract class Unop : Expr
+    {
+        public Expr Expr { get; }
+
+        protected Unop(Expr expr1) { Expr = expr1; }
+
+        public override bool Equals(Expr other)
+        {
+            var that = other as Unop;
+            return Expr.Equals(that?.Expr);
+        }
+    }
+
+    public class Sqrt : Unop
+    {
+        public Sqrt(Expr expr1) : base(expr1) { }
+
+        public override int Eval(Dictionary<string, int> env)
+        {
+            var eval = Expr.Eval(env);
+            return eval * eval;
+        }
+
+        public override Expr Simplify()
+        {
             return this;
         }
     }

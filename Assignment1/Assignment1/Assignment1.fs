@@ -90,7 +90,7 @@ type aexpr =
     | Sub of aexpr * aexpr
 
 //(ii)
-let first = Sub(Var "z", Add(Var "w", Var("z")))
+let first = Sub(Var "v", Add(Var "w", Var("z")))
 let second = Mul(CstI 2, Sub(Var "v", Add(Var "w", Var "z")))
 let third = Add(Var "x", Add(Var "y", Add(Var "z", Var "v")))
 
@@ -120,12 +120,10 @@ let simplify aexpr : aexpr =
                    | (f, CstI 1)               -> f
                    | _                         -> aexpr
     | _         -> aexpr
-    //Jeg vil ikke mene at Mul-simplificeringen rammer helt ved siden af. 
-    //Forklar endelig hvordan? 
-    //Jeg vil mene at:
-    //0 * whatever = 0
-    //1 * whatever = whatever
-    //whatever * 1 = whatever
+
+//(v)
+//Jeg forstår ikke hvad jeg skal lave i opgaven. 
+//Jeg har ikke kunne finde en ordentlig definition af hvad symbolic differentiation er. 
 
 
 //-----

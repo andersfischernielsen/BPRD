@@ -27,6 +27,7 @@ let keyword s =
     | "if"    -> IF
     | "in"    -> IN
     | "let"   -> LET
+    | "fun"   -> FUN
     | "not"   -> NOT
     | "then"  -> THEN
     | "true"  -> CSTBOOL true
@@ -55,6 +56,7 @@ rule Token = parse
   | '%'             { MOD }
   | '('             { LPAR }
   | ')'             { RPAR }
+  | "->"            { TO }
   | eof             { EOF }
   | _               { failwith "Lexer error: illegal symbol" }
 

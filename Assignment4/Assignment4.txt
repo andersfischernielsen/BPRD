@@ -7,4 +7,42 @@
 - The third result is as expected, since the value for x has already been "stored" in the previous closure. Assigning x = 77 therefore shouldn't have any effect on "addTwo 5". 
 - The last expression is a closure, which is expected. The expression is "missing" a parameter, and will therefore be a closure, waiting for a parameter. This is du to partial application.
 
+
 //Exercise 6.2
+See Visual Studio solution for solution. 
+The following things have been added/changed in HigherFun.fs: 
+- Added Clos type to value type.
+- Implemented Fun match case in eval function.
+- Implemented Clos match case in Call match case in eval function.
+
+
+//Exercise 6.3
+See Visual Studio solution for solution. 
+The following things have been added/changed in FunLex: 
+- Added "fun" keyword.
+- Added "->" token. 
+The following things have been added/changed in FunPar: 
+- Added FUN match case in AtExpr.
+
+
+//Exercise 6.4
+Couldn't finish exercise. IDK how.
+
+
+//Exercise 6.5
+//1) 
+i)   int.
+ii)  fail. Typecheck fails, since the definition of f and g is circular.
+iii) bool.
+iv)  fail. Since g is called with a bool, y must be a bool. Therefore the returntype of the function is bool. Since f x is called with an in (x is an int) a type error occurs, since x is returned if y is false. The return type cannot be both bool and int.
+iv)  bool.
+
+//2)
+i)   let f a = if a then a else a in f end
+ii)  let f b = if b = 1 then b else b in f end
+iii) let f a = let g = a + b in g end in f end
+iv)  let f a = let g b = a in g in end f end
+v)   let f a = let g b = b in g in end f end
+vi)  IDK
+vii) IDK
+iix) IDK

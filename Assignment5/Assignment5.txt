@@ -1,0 +1,23 @@
+//Assignment5
+
+//7.1
+I ran the examples, and created a compile.bat to enable quick compilation.
+
+
+//7.2
+(i & ii)
+See "arraysum_square.c" file for solution to exercise.
+
+(iii)
+See "histogram.c" file for solution to exercise.
+
+
+//7.3
+I modified "exec" in Interp.fs to allow for loops, so I wasn't "smart". 
+The solution works, though. The lexer and parser have of course also been modified. 
+See "arraysum_square_forloop.c" and "histogram_forloop.c" file for test of solution.
+
+
+//7.4 & 7.5
+The lexer, parser and Interp.fs have been modified to allow PreInc and PreDec. 
+I added the tokens as ExprNotAccess types. I don't know if that was wrong.
