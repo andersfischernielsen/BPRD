@@ -120,7 +120,7 @@ let initEnvAndStore (topdecs : topdec list) : locEnv * funEnv * store =
 (* ------------------------------------------------------------------- *)
 
 (* Interpreting micro-C statements *)
-
+    
 let rec exec stmt (locEnv : locEnv) (gloEnv : gloEnv) (store : store) : store = 
     match stmt with
     | If(e, stmt1, stmt2) -> 
@@ -133,6 +133,15 @@ let rec exec stmt (locEnv : locEnv) (gloEnv : gloEnv) (store : store) : store =
               if v<>0 then loop (exec body locEnv gloEnv store2)
                       else store2
       loop store
+    | For(e1, e2, e3, body) ->
+      let (valueInit, storeInit) = eval e1 locEnv gloEnv store
+      let rec loop store1 =
+              let (vCondition, store2) = eval e2 locEnv gloEnv store1 //Set i = 0 in for (i = 0; ... ) {
+              if vCondition<>0 then let store3 = exec body locEnv gloEnv store2 //Execute body after assignment of i if condition is true.
+                                    let (vAfter, storeFinal) = eval e3 locEnv gloEnv store3 //Increment i in for loop.
+                                    loop storeFinal //Loop again.
+              else store2
+      loop storeInit
     | Expr e -> 
       let (_, store1) = eval e locEnv gloEnv store 
       store1 
@@ -160,6 +169,12 @@ and eval e locEnv gloEnv store : int * store =
                         (res, setSto store2 loc res) 
     | CstI i         -> (i, store)
     | Addr acc       -> access acc locEnv gloEnv store
+    | PreInc i       -> let (location, store1) = access i locEnv gloEnv store
+                        let valuePlusOne = (getSto store1 location) + 1
+                        (valuePlusOne, setSto store1 location valuePlusOne)
+    | PreDec i       -> let (location, store1) = access i locEnv gloEnv store
+                        let valuePlusOne = (getSto store1 location) - 1
+                        (valuePlusOne, setSto store1 location valuePlusOne)
     | Prim1(ope, e1) ->
       let (i1, store1) = eval e1 locEnv gloEnv store
       let res =

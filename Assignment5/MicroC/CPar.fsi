@@ -26,6 +26,8 @@ type token =
   | TIMES
   | DIV
   | MOD
+  | PLUSPLUS
+  | MINUSMINUS
   | CHAR
   | ELSE
   | IF
@@ -36,6 +38,7 @@ type token =
   | RETURN
   | VOID
   | WHILE
+  | FOR
   | CSTSTRING of (string)
   | NAME of (string)
   | CSTINT of (int)
@@ -66,6 +69,8 @@ type tokenId =
     | TOKEN_TIMES
     | TOKEN_DIV
     | TOKEN_MOD
+    | TOKEN_PLUSPLUS
+    | TOKEN_MINUSMINUS
     | TOKEN_CHAR
     | TOKEN_ELSE
     | TOKEN_IF
@@ -76,6 +81,7 @@ type tokenId =
     | TOKEN_RETURN
     | TOKEN_VOID
     | TOKEN_WHILE
+    | TOKEN_FOR
     | TOKEN_CSTSTRING
     | TOKEN_NAME
     | TOKEN_CSTINT
@@ -105,10 +111,10 @@ type nonTerminalId =
     | NONTERM_Exprs1
     | NONTERM_Const
     | NONTERM_Type
-/// This function maps integers indexes to symbolic token ids
+/// This function maps tokens to integer indexes
 val tagOfToken: token -> int
 
-/// This function maps integers indexes to symbolic token ids
+/// This function maps integer indexes to symbolic token ids
 val tokenTagToTokenId: int -> tokenId
 
 /// This function maps production indexes returned in syntax errors to strings representing the non terminal that would be produced by that production
