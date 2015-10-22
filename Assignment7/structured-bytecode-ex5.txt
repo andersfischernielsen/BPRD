@@ -1,0 +1,59 @@
+LDARGS;         : init with one parameter - n.
+CALL (1,"L1");  : call function at L1 - main() - using the given parameter.
+STOP;           : when main() is done, stop the execution.
+
+Label "L1";
+INCSP 1;        : int r;            assign empty variable.
+GETBP;          :
+CSTI 1;         :
+ADD;            :                   get first variable in stack frame - r.
+GETBP;          :
+CSTI 0;         :
+ADD;            :
+LDI;            :                   load parameter - n.
+STI;            : r = n;            assign paramter to first variable in stack frame.
+INCSP -1;       :
+INCSP 1;        :
+GETBP;          :
+CSTI 0;         :
+ADD;            :
+LDI;            :                   load parameter - n.
+GETBP;          :
+CSTI 2;         :
+ADD;            : int r;            assign empty variable. Now we're in inner block.
+CALL (2,"L2");  : square(n, &r);    go to L2 with two parameters, n and the address of r.
+INCSP -1;       :
+GETBP;          :
+CSTI 2;         :
+ADD;            :
+LDI;            :                   load the third variable in the stack frame - r in inner block.
+PRINTI;         : print r;          print the variable.
+INCSP -1;       :
+INCSP -1;       :
+GETBP;          :
+CSTI 1;         :
+ADD;            :
+LDI;            :                   load the second variable in the stack frame - r in "outer" block.
+PRINTI;         : print r;          print the variable.
+INCSP -1;       :
+INCSP -1;       :
+RET 0;          :
+
+Label "L2";     
+GETBP;          : 
+CSTI 1;         :
+ADD;            :
+LDI;            :                   load the second parameter - *rp.
+GETBP;          :
+CSTI 0;         :
+ADD;            :
+LDI;            :                   load the first parameter - i.
+GETBP;          :
+CSTI 0;         :
+ADD;            :                   load the second parameter - *rp.
+LDI;            :                   load the current value.
+MUL;            :                   multiply the two parameters.
+STI;            : *rp = i * i;      assign the result to the first parameter - *rp.
+INCSP -1;       :
+INCSP 0;        :
+RET 1           : 

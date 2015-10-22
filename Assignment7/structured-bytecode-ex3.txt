@@ -1,0 +1,47 @@
+LDARGS;         : init with one parameter - n.
+CALL (1,"L1");  : call function at L1 - main() - using the given parameter.
+STOP;           : when main() is done, stop the execution.
+
+Label "L1";
+INCSP 1;        : 
+GETBP;          : 
+CSTI 1;         : 
+ADD;            : int i;        get the first variable in the stack frame. 
+CSTI 0;         : 
+STI;            : i=0;          assign 0 on the stack to i.
+INCSP -1;       : 
+GOTO "L3";      : go to "while" statement at L3.
+
+Label "L2";
+GETBP;          :
+CSTI 1;         :
+ADD;            :
+LDI;            : i;            load the first variable in the stack frame.
+PRINTI;         : print i;
+INCSP -1;       :
+GETBP;          : 
+CSTI 1;         :
+ADD;            :
+GETBP;          :
+CSTI 1;         :
+ADD;            :
+LDI;            :
+CSTI 1;         :
+ADD;            :
+STI;            : i = i + 1     load the first variable in the stack frame, push 1 on stack, add the two and assign i to be result.
+INCSP -1;       :
+INCSP 0;        :
+
+Label "L3";
+GETBP;          : 
+CSTI 1;         : 
+ADD;            : 
+LDI;            : i;            load the first variable in the stack frame.
+GETBP;          : 
+CSTI 0;         : 
+ADD;            : 
+LDI;            : n;            load n. 
+LT;             : (i < n) {
+IFNZRO "L2";    : while         if (i < n) go to L2.
+INCSP -1;       : 
+RET 0           :               while statement finished. return to main().
