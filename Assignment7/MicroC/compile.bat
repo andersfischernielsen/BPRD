@@ -1,3 +1,3 @@
 fslex --unicode CLex.fsl
 fsyacc --module CPar CPar.fsy
-fsi -r ./FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Interp.fs ParseAndRun.fs
+fsi -r ./FsLexYacc.Runtime.dll Absyn.fs CPar.fs CLex.fs Parse.fs Interp.fs Machine.fs Comp.fs ParseAndComp.fs
