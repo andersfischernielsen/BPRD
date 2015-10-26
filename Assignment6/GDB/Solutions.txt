@@ -1,0 +1,115 @@
+
+//////////
+// NATS //
+//////////
+
+The last element in the list will always be a pointer to null when using nats. Furthermore, calling nats several times in a row and storing the result in the same list pointer will append the new nats-result to the previous result.
+GDB was used to demonstrate this. Printing the tail of *l shows that the last tail is null. Furthermore the *res pointer points back to the first element of the "old" list when executing nats again. 
+
+
+-- OUTPUT: --
+Breakpoint 1 at 0x40068e: file exercise.c, line 22.
+Starting program: /home/anders/Desktop/GDB/exercise 
+
+Breakpoint 1, nats (max=2) at exercise.c:22
+22		if (max <= 0) {
+28			for (i = 0; i < max; i++) {
+$1 = 2
+29				res = cons(i + 1, res);
+$2 = 0
+28			for (i = 0; i < max; i++) {
+$3 = {head = 1, tail = 0x0}
+29				res = cons(i + 1, res);
+28			for (i = 0; i < max; i++) {
+$4 = {head = 2, tail = 0x602010}
+$5 = 1
+31			return res;
+$6 = {head = 2, tail = 0x602010}
+$7 = {head = 1, tail = 0x0}
+Cannot access memory at address 0x0
+Continuing.
+
+Breakpoint 1, nats (max=1) at exercise.c:22
+22		if (max <= 0) {
+28			for (i = 0; i < max; i++) {
+29				res = cons(i + 1, res);
+$8 = {head = 2, tail = 0x602010}
+28			for (i = 0; i < max; i++) {
+$9 = {head = 1, tail = 0x602030}
+$10 = {head = 2, tail = 0x602010}
+31			return res;
+$11 = {head = 1, tail = 0x602030}
+33	}
+Continuing.
+[Inferior 1 (process 19414) exited with code 01]
+
+
+
+///////////////
+// FREE LIST //
+///////////////
+
+The line "free(l->tail);" tries to freeze a pointer that's not existing. By trying to free l->tail when l is nil, a segmentation fault will occur.
+
+
+-- OUTPUT: --
+Breakpoint 1 at 0x40072a: file exercise.c, line 44.
+Starting program: /home/anders/Desktop/GDB/exercise 
+
+Breakpoint 1, free_list (l=0x602030) at exercise.c:44
+44		while (is_cons(l)) {
+$1 = {head = 2, tail = 0x602010}
+45			free(l);
+46			l = l->tail;
+$2 = {head = 0, tail = 0x602010}
+44		while (is_cons(l)) {
+$3 = {head = 1, tail = 0x0}
+45			free(l);
+46			l = l->tail;
+$4 = {head = 6299680, tail = 0x0}
+44		while (is_cons(l)) {
+Cannot access memory at address 0x0
+48		free(l->tail);
+
+Program received signal SIGSEGV, Segmentation fault.
+0x0000000000400758 in free_list (l=0x0) at exercise.c:48
+48		free(l->tail);
+Continuing.
+
+Program terminated with signal SIGSEGV, Segmentation fault.
+The program no longer exists.
+
+
+
+////////////////
+// PRINT LIST //
+////////////////
+
+The while-do loop will always run once, and if *l == nil, then a segmentation fault will occur.
+
+
+-- OUTPUT: --
+Breakpoint 1 at 0x4006df: file exercise.c, line 36.
+Starting program: /home/anders/Desktop/GDB/exercise 
+
+Breakpoint 1, print_list (l=0x0) at exercise.c:37
+37			printf("%d :: ", l->head);
+Cannot access memory at address 0x0
+
+Program received signal SIGSEGV, Segmentation fault.
+0x00000000004006e3 in print_list (l=0x0) at exercise.c:37
+37			printf("%d :: ", l->head);
+
+
+
+/////////////
+// FBINFER //
+/////////////
+
+   ...
+   exercise.c:14: error: NULL_DEREFERENCE
+     pointer this last assigned on line 13 could be null and is dereferenced at line 14, column 3
+   ...
+
+
+The above is printed by fbinfer due to the fact that malloc can return null when allocation of memory fails. Therefore assigning to this->head will result in an error.

@@ -1,0 +1,21 @@
+﻿{
+module ReLex
+
+open Microsoft.FSharp.Text.Lexing
+
+open RePar
+
+let lexemeAsString lexbuf =
+    LexBuffer<char>.LexemeString lexbuf
+	}
+
+rule Token = parse
+   | [' ']           { SPACE }
+   | [''']['a'-'z''A'-'Z''0'-'9'][''']
+                     { CHAR (lexemeAsString lexbuf).[1] }
+   | '*'             { STAR }
+   | '|'             { CHOICE }
+   | '('             { LPAR }
+   | ')'             { RPAR }
+   | eof             { EPS }
+   | _               { failwith "Lexer error: illegal symbol" }
