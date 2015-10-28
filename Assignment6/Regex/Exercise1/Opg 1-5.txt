@@ -1,0 +1,22 @@
+Abstrakt syntaks: 
+Et regulært udtrykt er enten en karakter, den tomme string, en sekvens af regulære udtryk, en gentagelse af regulært udtryk, eller et valg mellem 2 regulære udtryk. 
+Det er værd at bemærke, at regulære udtryk er reukursivt defineret; altså, at et regulært udtryk, f.eks. et valg (som er et regulært udtryk), selv indeholder to regulære udtryk. Ydermere kan en sekvenser af regulære udtryk være vilkårligt lang, da en sekvens kan indeholde en sekvens, osv. 
+
+
+Lexing sker i ReLex.fsl
+Vi benytter regulære udtryk til at identificere tegn med en speciel betydning, f.eks. "*", "(", ")", " " (mellemrum) og "|". Karakterer identificeres ved hjælp af regulære udtryk. "eof"-karakteren lexes til EPS, da den tomme streng indikerer, at der ikke er mere at lexe. Lexing resulterer i en strøm af tokens, der er defineret i RePar.fsy.
+
+
+RePar.fsy definerer en række tokens:
+CHAR indikerer en karakter
+EPS indikerer den tomme string
+STAR indikerer en gentagelse af det foregående regulære udtryk
+SPACE indikerer et mellemrum. 
+CHOICE indikerer et valg mellem to regulære udtryk
+LPAR og RPAR indikerer henholdsvis en højre- og venstreparentes; "(" og ")
+
+
+Associativitet og præcedens for tokens er relevant at definere for CHOICE og STAR:
+STAR har stærkere præcedens end CHOICE, således at a|b* fortolkes korrekt som (a|(b*)) og ikke (a|b)*. Disse tokens anvendes til at parse token-strømmen til den abstrakte syntaks, som defineret i Absyn.fs. Parenteser anvendes til at inddele regulære udtryk korrekt, men anvendes ikke herefter. Mellemrum ignoreres. RegExpr-typen er rekursivt defineret, hvilket muliggør indlejrede regulære udtryk. 
+
+Parse.fs indholder funktionen parse, som modtager en string og starter lexing-/parsing processen, og returnerer resultatet heraf. 

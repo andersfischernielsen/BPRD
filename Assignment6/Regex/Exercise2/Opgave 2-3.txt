@@ -1,0 +1,7 @@
+Opgave 2-1
+NFA’ens trans liste sorteres således: Der sorteres først efter det første element i triplen i listen, og derefter efter det næste element i triplen, mens den første sortering respekteres. 
+
+
+Opgave 2-2
+Listen løbes igennem; hvis der findes et SEps, returneres false med det samme. 
+Hvis ikke tages det første element i NFA’ens trans-liste. Dette element sammenlignes med resten af listens elementer. Hvis der er findes et element, hvis start-state og symbol er ens med et andet elements, returneres false. Ellers gentages denne procedure med det næste element i listen. 

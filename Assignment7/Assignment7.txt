@@ -7,7 +7,7 @@ See "structured-bytecode-ex3.txt", "structured-bytecode-ex5.txt" and "ex3trace.t
 
 
 //8.4
-
+See "structured-bytecode-ex8.txt" and "structured-bytecode-ex13.txt" for solutions.
 
 //8.5
 
