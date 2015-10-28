@@ -29,7 +29,7 @@ let nl = CstI 10
 %nonassoc GT LT GE LE
 %left PLUS MINUS
 %left TIMES DIV MOD
-%left PLUSPLUS MINUSMINUS
+%nonassoc PLUSPLUS MINUSMINUS
 %nonassoc NOT AMP 
 %nonassoc LBRACK          /* highest precedence  */
 

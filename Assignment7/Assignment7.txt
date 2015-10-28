@@ -4,7 +4,7 @@
 See "structured-bytecode-ex3.txt", "structured-bytecode-ex5.txt" and "ex3trace.txt" for solutions.
 
 //8.3
-
+See "MicroC/Comp.fs", "MicroC/CLex.fsl", "MicroC/CPar.fsy" and "preinc-predec-test.x" for solution.
 
 //8.4
 See "structured-bytecode-ex8.txt" and "structured-bytecode-ex13.txt" for solutions.
