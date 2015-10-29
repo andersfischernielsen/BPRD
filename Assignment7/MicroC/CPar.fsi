@@ -21,6 +21,8 @@ type token =
   | LT
   | GE
   | LE
+  | SWITCH
+  | CASE
   | PLUS
   | MINUS
   | TIMES
@@ -66,6 +68,8 @@ type tokenId =
     | TOKEN_LT
     | TOKEN_GE
     | TOKEN_LE
+    | TOKEN_SWITCH
+    | TOKEN_CASE
     | TOKEN_PLUS
     | TOKEN_MINUS
     | TOKEN_TIMES
@@ -105,6 +109,8 @@ type nonTerminalId =
     | NONTERM_Block
     | NONTERM_StmtOrDecSeq
     | NONTERM_Stmt
+    | NONTERM_Case
+    | NONTERM_Cases
     | NONTERM_StmtM
     | NONTERM_StmtU
     | NONTERM_Expr

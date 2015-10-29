@@ -20,6 +20,8 @@ let keyword s =
     | "else"    -> ELSE
     | "false"   -> CSTBOOL 0
     | "if"      -> IF
+    | "switch"  -> SWITCH
+    | "case"    -> CASE
     | "int"     -> INT
     | "null"    -> NULL
     | "print"   -> PRINT

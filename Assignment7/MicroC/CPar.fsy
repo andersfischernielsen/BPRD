@@ -16,6 +16,7 @@ let nl = CstI 10
 
 %token CHAR ELSE IF INT NULL PRINT PRINTLN RETURN VOID WHILE FOR QSTMARK COLON
 %token PLUS MINUS TIMES DIV MOD PLUSPLUS MINUSMINUS
+%token SWITCH CASE
 %token EQ NE GT LT GE LE
 %token NOT SEQOR SEQAND
 %token LPAR RPAR LBRACE RBRACE LBRACK RBRACK SEMI COMMA ASSIGN AMP
@@ -96,11 +97,21 @@ Stmt:
   | StmtU                               { $1 }
 ;
 
+Case:
+    CASE CSTINT COLON Block              { ($2, $4) }
+;
+
+Cases:
+    /* empty */                         { [] }
+  | Case Cases                          { $1::$2 }
+;
+
 StmtM:  /* No unbalanced if-else */
     Expr SEMI                           { Expr($1)             }
   | RETURN SEMI                         { Return None          }
   | RETURN Expr SEMI                    { Return(Some($2))     }
   | Block                               { $1                   }
+	| SWITCH LPAR Expr RPAR LBRACE Cases RBRACE { Switch($3, $6) }
   | IF LPAR Expr RPAR StmtM ELSE StmtM  { If($3, $5, $7)       }
   | WHILE LPAR Expr RPAR StmtM          { While($3, $5)        }
   | FOR LPAR Expr SEMI Expr SEMI Expr RPAR StmtM          { For($3, $5, $7, $9)        }

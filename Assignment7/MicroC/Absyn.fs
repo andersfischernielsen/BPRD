@@ -34,6 +34,7 @@ and access =
 
 and stmt =
   | If of expr * stmt * stmt         (* Conditional                 *)
+  | Switch of expr * (int * stmt) list (* Case                        *)
   | While of expr * stmt             (* While loop                  *)
   | For of expr * expr * expr * stmt (* For loop                    *)
   | Expr of expr                     (* Expression statement   e;   *)

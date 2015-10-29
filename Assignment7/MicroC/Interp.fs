@@ -151,6 +151,14 @@ let rec exec stmt (locEnv : locEnv) (gloEnv : gloEnv) (store : store) : store =
           | [ ] -> store
           | s1::sr -> loop sr (stmtordec s1 locEnv gloEnv store)
       loop stmts (locEnv, store)
+    | Switch(e, stmts) ->
+          let (v, store1) = eval e locEnv gloEnv store
+          let rec checkCases list =
+              match list with
+              | []                    -> store1
+              | (c, s)::xs when c = v -> exec s locEnv gloEnv store1
+              | x::xs                 -> checkCases xs
+          checkCases stmts
     | Return _ -> failwith "return not implemented"
 
 and stmtordec stmtordec locEnv gloEnv store =

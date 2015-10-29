@@ -35,11 +35,11 @@ INCSP 0;        :
 Label "L3";
 GETBP;          : 
 CSTI 1;         : 
-ADD;            : 
-LDI;            : i;            load the first variable in the stack frame.
+ADD;            :               set the base pointer to be able to load
+LDI;            : i;            the first variable in the stack frame, i.
 GETBP;          : 
 CSTI 0;         : 
-ADD;            : 
+ADD;            :               same for n.
 LDI;            : n;            load n. 
 LT;             : (i < n) {
 IFNZRO "L2";    : while         if (i < n) go to L2.
