@@ -123,17 +123,23 @@ let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list =
       @ [Label labelse] @ cStmt stmt2 varEnv funEnv
       @ [Label labend]
     | Switch(e, stmts) ->
+      let labend = newLabel()
       let generateLabels list acc =
           match list with
           | x::xs -> let label = newLabel()
+                     let labelNext = newLabel()
                      //Check that in "switch(e) case n" that e == n.
                      acc @ cExpr e varEnv funEnv @ [CSTI (fst x)] @ [EQ]
-                     //If e == n, add label to execute statement.
-                     @ [IFNZERO label] @ [Label label] cStmt (snd s) varEnv funEnv
-                     //Recursively generate e == n check and add stmts.
-                     @ generateLabels xs
-                     //When finished, return accumulated list.
-          | _     -> acc
+                     //If e != n, go to next check (inefficient - many jumps).
+                     @ [IFZERO labelNext]
+                     //If e == n, execute statement.
+                     @ cStmt (snd s) varEnv funEnv
+                     //Finished execution, goto end.
+                     @ [GOTO labend]
+                     //Add label for next comparison, and recursively generate
+                     //checks for case matches.
+                     @ [Label labelNext] @ generateLabels xs
+          | _     -> acc @ [Label labend]
       //Call function to generate switch checks and return.
       generateLabelAndStore stmts []
     | While(e, body) ->
