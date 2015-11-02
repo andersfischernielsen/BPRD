@@ -124,12 +124,13 @@ let rec cStmt stmt (varEnv : varEnv) (funEnv : funEnv) : instr list =
       @ [Label labend]
     | Switch(e, stmts) ->
       let labend = newLabel()
+      let ce = cExpr e varEnv funEnv
       let generateLabels list acc =
           match list with
           | x::xs -> let label = newLabel()
                      let labelNext = newLabel()
                      //Check that in "switch(e) case n" that e == n.
-                     acc @ cExpr e varEnv funEnv @ [CSTI (fst x)] @ [EQ]
+                     acc @ ce @ [CSTI (fst x)] @ [EQ]
                      //If e != n, go to next check (inefficient - many jumps).
                      @ [IFZERO labelNext]
                      //If e == n, execute statement.
