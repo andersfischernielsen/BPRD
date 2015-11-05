@@ -7,7 +7,7 @@ open RePar
 
 let lexemeAsString lexbuf =
     LexBuffer<char>.LexemeString lexbuf
-	}
+}
 
 rule Token = parse
    | [' ']           { SPACE }

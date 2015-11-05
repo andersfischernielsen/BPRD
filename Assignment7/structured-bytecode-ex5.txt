@@ -13,14 +13,14 @@ ADD;            :
 LDI;            :                   load parameter - n.
 STI;            : r = n;            assign paramter to first variable in stack frame.
 INCSP -1;       :
-INCSP 1;        :
+INCSP 1;        :                   Now we're in inner block.
 GETBP;          :
 CSTI 0;         :
 ADD;            :
 LDI;            :                   load parameter - n.
 GETBP;          :
 CSTI 2;         :
-ADD;            : int r;            assign empty variable. Now we're in inner block.
+ADD;            : int r;            assign empty variable.
 CALL (2,"L2");  : square(n, &r);    go to L2 with two parameters, n and the address of r.
 INCSP -1;       :
 GETBP;          :

@@ -3,7 +3,7 @@ CALL (1,"L1");  : call function at L1 - main() - using the given parameter.
 STOP;           : when main() is done, stop the execution.
 
 Label "L1";
-INCSP 1;        : 
+INCSP 1;        :               increment the stack pointer to make room for variables.
 GETBP;          : 
 CSTI 1;         : 
 ADD;            : int i;        get the first variable in the stack frame. 
@@ -15,13 +15,13 @@ GOTO "L3";      : go to "while" statement at L3.
 Label "L2";
 GETBP;          :
 CSTI 1;         :
-ADD;            :
+ADD;            :               find pointer to the variable.
 LDI;            : i;            load the first variable in the stack frame.
 PRINTI;         : print i;
 INCSP -1;       :
 GETBP;          : 
 CSTI 1;         :
-ADD;            :
+ADD;            :               
 GETBP;          :
 CSTI 1;         :
 ADD;            :
@@ -29,17 +29,17 @@ LDI;            :
 CSTI 1;         :
 ADD;            :
 STI;            : i = i + 1     load the first variable in the stack frame, push 1 on stack, add the two and assign i to be result.
-INCSP -1;       :
+INCSP -1;       :               decrease the stack pointer, 'throw away' the result.
 INCSP 0;        :
 
 Label "L3";
 GETBP;          : 
 CSTI 1;         : 
-ADD;            : 
-LDI;            : i;            load the first variable in the stack frame.
+ADD;            :               set the base pointer to be able to load
+LDI;            : i;            the first variable in the stack frame, i.
 GETBP;          : 
 CSTI 0;         : 
-ADD;            : 
+ADD;            :               same for n.
 LDI;            : n;            load n. 
 LT;             : (i < n) {
 IFNZRO "L2";    : while         if (i < n) go to L2.
