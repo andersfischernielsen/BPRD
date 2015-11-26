@@ -1,5 +1,5 @@
 /* File ListC/listmachine.c
-   A unified-stack abstract machine and garbage collector 
+   A unified-stack abstract machine and garbage collector
    for list-C, a variant of micro-C with cons cells.
    sestoft@itu.dk * 2009-11-17, 2012-02-08
 
@@ -23,16 +23,16 @@
     * All integers are tagged with a 1 bit in the least significant
       position, regardless of whether they represent program integers,
       return addresses, array base addresses or old base pointers
-      (into the stack).  
+      (into the stack).
     * All heap references are word-aligned, that is, the two least
-      significant bits of a heap reference are 00.  
+      significant bits of a heap reference are 00.
     * Integer constants and code addresses in the program array
       p[...] are not tagged.
-   The distinction between integers and references is necessary for 
+   The distinction between integers and references is necessary for
    the garbage collector to be precise (not conservative).
 
-   The heap consists of 32-bit words, and the heap is divided into 
-   blocks.  A block has a one-word header block[0] followed by the 
+   The heap consists of 32-bit words, and the heap is divided into
+   blocks.  A block has a one-word header block[0] followed by the
    block's contents: zero or more words block[i], i=1..n.
 
    A header has the form ttttttttnnnnnnnnnnnnnnnnnnnnnngg
@@ -46,8 +46,8 @@
    gg=11=Black: block is live (after mark, before sweep)
    gg=11=Blue:  block is on the freelist or orphaned
 
-   A block of length zero is an orphan; it cannot be used 
-   for data and cannot be on the freelist.  An orphan is 
+   A block of length zero is an orphan; it cannot be used
+   for data and cannot be on the freelist.  An orphan is
    created when allocating all but the last word of a free block.
 */
 
@@ -120,7 +120,7 @@ word *freelist;
 #define SETCDR 31
 
 #define STACKSIZE 1000
-  
+
 // Print the stack machine instruction at p[pc]
 
 void printInstruction(int p[], int pc) {
@@ -157,7 +157,7 @@ void printInstruction(int p[], int pc) {
   case CDR:    printf("CDR"); break;
   case SETCAR: printf("SETCAR"); break;
   case SETCDR: printf("SETCDR"); break;
-  default:     printf("<unknown>"); break; 
+  default:     printf("<unknown>"); break;
   }
 }
 
@@ -170,20 +170,20 @@ void printStackAndPc(int s[], int bp, int sp, int p[], int pc) {
     if (IsInt(s[i]))
       printf("%d ", Untag(s[i]));
     else
-      printf("#%d ", s[i]);      
+      printf("#%d ", s[i]);
   printf("]");
-  printf("{%d:", pc); printInstruction(p, pc); printf("}\n"); 
+  printf("{%d:", pc); printInstruction(p, pc); printf("}\n");
 }
 
 // Read instructions from a file, return array of instructions
 
 int* readfile(char* filename) {
   int capacity = 1, size = 0;
-  int *program = (int*)malloc(sizeof(int)*capacity); 
+  int *program = (int*)malloc(sizeof(int)*capacity);
   FILE *inp = fopen(filename, "r");
   int instr;
   while (fscanf(inp, "%d", &instr) == 1) {
-    if (size >= capacity) { 
+    if (size >= capacity) {
       int* buffer = (int*)malloc(sizeof(int) * 2 * capacity);
       int i;
       for (i=0; i<capacity; i++)
@@ -200,40 +200,40 @@ int* readfile(char* filename) {
 
 word* allocate(unsigned int tag, unsigned int length, int s[], int sp);
 
-// The machine: execute the code starting at p[pc] 
+// The machine: execute the code starting at p[pc]
 
 int execcode(int p[], int s[], int iargs[], int iargc, int /* boolean */ trace) {
-  int bp = -999;        // Base pointer, for local variable access 
+  int bp = -999;        // Base pointer, for local variable access
   int sp = -1;          // Stack top pointer
   int pc = 0;           // Program counter: next instruction
   for (;;) {
-    if (trace) 
+    if (trace)
       printStackAndPc(s, bp, sp, p, pc);
     switch (p[pc++]) {
     case CSTI:
       s[sp+1] = Tag(p[pc++]); sp++; break;
-    case ADD: 
+    case ADD:
       s[sp-1] = Tag(Untag(s[sp-1]) + Untag(s[sp])); sp--; break;
-    case SUB: 
+    case SUB:
       s[sp-1] = Tag(Untag(s[sp-1]) - Untag(s[sp])); sp--; break;
-    case MUL: 
+    case MUL:
       s[sp-1] = Tag(Untag(s[sp-1]) * Untag(s[sp])); sp--; break;
-    case DIV: 
+    case DIV:
       s[sp-1] = Tag(Untag(s[sp-1]) / Untag(s[sp])); sp--; break;
-    case MOD: 
+    case MOD:
       s[sp-1] = Tag(Untag(s[sp-1]) % Untag(s[sp])); sp--; break;
-    case EQ: 
+    case EQ:
       s[sp-1] = Tag(s[sp-1] == s[sp] ? 1 : 0); sp--; break;
-    case LT: 
+    case LT:
       s[sp-1] = Tag(s[sp-1] < s[sp] ? 1 : 0); sp--; break;
     case NOT: {
       int v = s[sp];
       s[sp] = Tag((IsInt(v) ? Untag(v) == 0 : v == 0) ? 1 : 0);
     } break;
-    case DUP: 
+    case DUP:
       s[sp+1] = s[sp]; sp++; break;
-    case SWAP: 
-      { int tmp = s[sp];  s[sp] = s[sp-1];  s[sp-1] = tmp; } break; 
+    case SWAP:
+      { int tmp = s[sp];  s[sp] = s[sp-1];  s[sp-1] = tmp; } break;
     case LDI:                 // load indirect
       s[sp] = s[Untag(s[sp])]; break;
     case STI:                 // store indirect, keep value on top
@@ -246,41 +246,41 @@ int execcode(int p[], int s[], int iargs[], int iargc, int /* boolean */ trace) 
       sp = sp+p[pc++]; break;
     case GOTO:
       pc = p[pc]; break;
-    case IFZERO: { 
+    case IFZERO: {
       int v = s[sp--];
-      pc = (IsInt(v) ? Untag(v) == 0 : v == 0) ? p[pc] : pc+1; 
+      pc = (IsInt(v) ? Untag(v) == 0 : v == 0) ? p[pc] : pc+1;
     } break;
-    case IFNZRO: { 
+    case IFNZRO: {
       int v = s[sp--];
-      pc = (IsInt(v) ? Untag(v) != 0 : v != 0) ? p[pc] : pc+1; 
+      pc = (IsInt(v) ? Untag(v) != 0 : v != 0) ? p[pc] : pc+1;
     } break;
-    case CALL: { 
+    case CALL: {
       int argc = p[pc++];
       int i;
       for (i=0; i<argc; i++)               // Make room for return address
         s[sp-i+2] = s[sp-i];               // and old base pointer
-      s[sp-argc+1] = Tag(pc+1); sp++; 
-      s[sp-argc+1] = Tag(bp);   sp++; 
+      s[sp-argc+1] = Tag(pc+1); sp++;
+      s[sp-argc+1] = Tag(bp);   sp++;
       bp = sp+1-argc;
-      pc = p[pc]; 
-    } break; 
-    case TCALL: { 
+      pc = p[pc];
+    } break;
+    case TCALL: {
       int argc = p[pc++];                  // Number of new arguments
       int pop  = p[pc++];                  // Number of variables to discard
       int i;
       for (i=argc-1; i>=0; i--)    // Discard variables
         s[sp-i-pop] = s[sp-i];
-      sp = sp - pop; pc = p[pc]; 
-    } break; 
-    case RET: { 
-      int res = s[sp]; 
-      sp = sp-p[pc]; bp = Untag(s[--sp]); pc = Untag(s[--sp]); 
-      s[sp] = res; 
-    } break; 
+      sp = sp - pop; pc = p[pc];
+    } break;
+    case RET: {
+      int res = s[sp];
+      sp = sp-p[pc]; bp = Untag(s[--sp]); pc = Untag(s[--sp]);
+      s[sp] = res;
+    } break;
     case PRINTI:
-      printf("%d ", IsInt(s[sp]) ? Untag(s[sp]) : s[sp]); break; 
+      printf("%d ", IsInt(s[sp]) ? Untag(s[sp]) : s[sp]); break;
     case PRINTC:
-      printf("%c", Untag(s[sp])); break; 
+      printf("%c", Untag(s[sp])); break;
     case LDARGS: {
       int i;
       for (i=0; i<iargc; i++) // Push commandline arguments
@@ -288,38 +288,38 @@ int execcode(int p[], int s[], int iargs[], int iargc, int /* boolean */ trace) 
     } break;
     case STOP:
       return 0;
-    case NIL:    
+    case NIL:
       s[sp+1] = 0; sp++; break;
     case CONS: {
-      word* p = allocate(CONSTAG, 2, s, sp); 
+      word* p = allocate(CONSTAG, 2, s, sp);
       p[1] = (word)s[sp-1];
       p[2] = (word)s[sp];
       s[sp-1] = (int)p;
       sp--;
     } break;
     case CAR: {
-      word* p = (word*)s[sp]; 
-      if (p == 0) 
+      word* p = (word*)s[sp];
+      if (p == 0)
         { printf("Cannot take car of null\n"); return -1; }
       s[sp] = (int)(p[1]);
     } break;
     case CDR: {
-      word* p = (word*)s[sp]; 
-      if (p == 0) 
+      word* p = (word*)s[sp];
+      if (p == 0)
         { printf("Cannot take cdr of null\n"); return -1; }
       s[sp] = (int)(p[2]);
     } break;
     case SETCAR: {
       word v = (word)s[sp--];
-      word* p = (word*)s[sp]; 
+      word* p = (word*)s[sp];
       p[1] = v;
     } break;
     case SETCDR: {
       word v = (word)s[sp--];
-      word* p = (word*)s[sp]; 
+      word* p = (word*)s[sp];
       p[2] = v;
     } break;
-    default:                  
+    default:
       printf("Illegal instruction %d at address %d\n", p[pc-1], pc-1);
       return -1;
     }
@@ -347,9 +347,9 @@ int execute(int argc, char** argv, int /* boolean */ trace) {
   return res;
 }
 
-// Garbage collection and heap allocation 
+// Garbage collection and heap allocation
 
-word mkheader(unsigned int tag, unsigned int length, unsigned int color) { 
+word mkheader(unsigned int tag, unsigned int length, unsigned int color) {
   return (tag << 24) | (length << 2) | color;
 }
 
@@ -360,18 +360,18 @@ int inHeap(word* p) {
 // Call this after a GC to get heap statistics:
 
 void heapStatistics() {
-  int blocks = 0, free = 0, orphans = 0, 
+  int blocks = 0, free = 0, orphans = 0,
     blocksSize = 0, freeSize = 0, largestFree = 0;
   word* heapPtr = heap;
   while (heapPtr < afterHeap) {
     if (Length(heapPtr[0]) > 0) {
       blocks++;
       blocksSize += Length(heapPtr[0]);
-    } else 
+    } else
       orphans++;
     word* nextBlock = heapPtr + Length(heapPtr[0]) + 1;
     if (nextBlock > afterHeap) {
-      printf("HEAP ERROR: block at heap[%d] extends beyond heap\n", 
+      printf("HEAP ERROR: block at heap[%d] extends beyond heap\n",
 	     heapPtr-heap);
       exit(-1);
     }
@@ -379,10 +379,10 @@ void heapStatistics() {
   }
   word* freePtr = freelist;
   while (freePtr != 0) {
-    free++; 
+    free++;
     int length = Length(freePtr[0]);
     if (freePtr < heap || afterHeap < freePtr+length+1) {
-      printf("HEAP ERROR: freelist item %d (at heap[%d], length %d) is outside heap\n", 
+      printf("HEAP ERROR: freelist item %d (at heap[%d], length %d) is outside heap\n",
 	     free, freePtr-heap, length);
       exit(-1);
     }
@@ -392,7 +392,7 @@ void heapStatistics() {
       printf("Non-blue block at heap[%d] on freelist\n", (int)freePtr);
     freePtr = (word*)freePtr[1];
   }
-  printf("Heap: %d blocks (%d words); of which %d free (%d words, largest %d words); %d orphans\n", 
+  printf("Heap: %d blocks (%d words); of which %d free (%d words, largest %d words); %d orphans\n",
 	 blocks, blocksSize, free, freeSize, largestFree, orphans);
 }
 
@@ -405,14 +405,59 @@ void initheap() {
   freelist = &heap[0];
 }
 
+void mark(word* block) {
+  //If the block isn't an int it must be a reference.
+  if (block != 0 && !IsInt((int) block)) {
+    int length = Length(*block);
+
+    //Paint the block black.
+    *block = Paint(*block, Black);
+
+    //Recursively paint all words in the block.
+    int i = 1;
+    while (i <= length) {
+      //Recursively mark the words in the block.
+      mark(block[i]);
+      i++;
+    }
+  }
+}
+
 void markPhase(int s[], int sp) {
   printf("marking ...\n");
-  // TODO: Actually mark something
+  int i;
+  for (i = 0; i < sp; i++) {
+    //Try to mark everything in the stack.
+    mark((word*) s[i]);
+  }
 }
 
 void sweepPhase() {
   printf("sweeping ...\n");
-  // TODO: Actually sweep
+
+  int i;
+  //Go through the entire heap.
+  for (i = 0; i<HEAPSIZE; i += (Length(heap[i])+1)) {
+    if (Color(heap[i]) == Black) {
+      //Paint all black blocks white.
+      heap[i] = Paint(heap[i], White);
+    }
+    else if (Color(heap[i]) == White) {
+      //Set the previous first block in the freelist to point to this block.
+      heap[i+1] = freelist;
+      heap[i] = Paint(heap[i], Blue);
+      freelist = &heap[i];
+
+      //The address of the next ehader in the heap.
+      int nextHeader = Length(heap[i])+1;
+      //Check if the block after this one is white (and we're still inside heap).
+      if ((nextHeader < HEAPSIZE) && Color(heap[nextHeader]) == White) {
+        //If the next block is white, reassign the current header's length to be
+        //as long as the two blocks combined.
+        heap[i] = mkheader(0, nextHeader + Length((int) heap[nextHeader]), Blue);
+      }
+    }
+  }
 }
 
 void collect(int s[], int sp) {

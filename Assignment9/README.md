@@ -21,7 +21,52 @@ SETCAR: SETCAR sets the car value of the topmost cons cell on the stack from the
 
 
 //(ii)
+	hdr = ttttttttnnnnnnnnnnnnnnnnnnnnnngg
 
+Length: 
+	hdr >>2 
+	= 
+	00ttttttttnnnnnnnnnnnnnnnnnnnnnn
+
+	0x003FFFFF 
+	= 
+	00000000001111111111111111111111
+	
+	00000000001111111111111111111111
+	&
+	00ttttttttnnnnnnnnnnnnnnnnnnnnnn
+	=
+	0000000000nnnnnnnnnnnnnnnnnnnnnn
+	
+Color:  
+	3 
+	= 
+	00000000000000000000000000000011
+	
+	ttttttttnnnnnnnnnnnnnnnnnnnnnngg
+	&
+	00000000000000000000000000000011
+	=
+	000000000000000000000000000000gg
+	
+
+Paint:  	
+	~3 
+	=
+	11111111111111111111111111111100
+	
+	ttttttttnnnnnnnnnnnnnnnnnnnnnngg
+	&
+	11111111111111111111111111111100
+	= 
+	ttttttttnnnnnnnnnnnnnnnnnnnnnn00
+
+	ttttttttnnnnnnnnnnnnnnnnnnnnnn00
+	| 
+	000000000000000000000000000000cc
+	=
+	ttttttttnnnnnnnnnnnnnnnnnnnnnncc
+	
 
 //(iii)
 No. When a cons cell should be allocated, the listmachine tries to allocate memory. The only other interaction with the mutator and garbage collector happens when there's not any free space for allocation (see iv).
@@ -30,6 +75,9 @@ No. When a cons cell should be allocated, the listmachine tries to allocate memo
 The collect() function will be called when the listmachine is unable to allocate memory in the heap. The heap must therefore be full, and a garbage collection is needed. 
 
 
-//Exercise 9.2 and 9.3:
-See listmachine.c for implementation.
+//Exercise 9.2:
+See listmachine.c for implementation. 
+I need some hint to solve this (see code).
 
+//Exercise 9.3:
+Not finished.
