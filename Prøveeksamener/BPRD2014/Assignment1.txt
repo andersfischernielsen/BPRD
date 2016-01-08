@@ -1,0 +1,19 @@
+Assignment1
+
+1) 
+e(fd*)*x
+
+efdx
+efx
+ex
+efdddddddx
+efdfdddx 
+
+Udtrykket beskriver alle strenge der starter med e, 
+    inkluderer 1+ f efterfulgt af et hvilket som helst antal d eller f
+    eller ingen f eller d, 
+efterfulgt af ét x. 
+
+
+4)
+f(s*d*)*
