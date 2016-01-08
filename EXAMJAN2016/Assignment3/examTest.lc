@@ -1,0 +1,6 @@
+void main() {
+    dynamic s1;
+    dynamic s2;
+    s1 = "Hi there";
+    s2 = "Hi there again";
+}

@@ -1,0 +1,41 @@
+﻿%{
+ open Absyn;
+%}
+
+%token <char> CHAR
+
+%token EPS
+%token STAR
+%token SPACE
+%token CHOICE
+%token LPAR RPAR SQLPAR SQRPAR
+
+%nonassoc CHOICE
+%left STAR
+%left QUESTION
+%left PLUS
+
+%start Main
+%type <Absyn.re> Main RegExpr
+%%
+
+Main:
+  RegExpr EPS             	{ $1             }
+;
+
+RegExpr:
+  | SPACE RegExpr			      { $2             }
+  | RegExpr RegExpr        	{ Seq($1, $2)	   }
+  | CHAR                  	{ Char $1	       }
+  | LPAR RegExpr RPAR     	{ $2             }
+  | SQLPAR Chars SQRPAR     	{ $2              }
+  | RegExpr CHOICE RegExpr  { Choice($1, $3) }
+  | RegExpr STAR           	{ Star($1)       }
+  | RegExpr QUESTION        { Question($1)   }
+  | RegExpr PLUS        { Plus($1)   }
+;
+
+Chars:
+    CHAR                                { $1                   }
+  | CHAR Chars                          { Choice( Char $1, $2)               }
+;
